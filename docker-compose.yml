@@ -1,5 +1,9 @@
 version: '3.4'
 services:
+  test-runner:
+    build:
+      context: .
+    entrypoint: ["flake8"]
   server:
     build:
       context: .
