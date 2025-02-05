@@ -7,9 +7,11 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from .. import db, login_manager
 
 
+# This needs to be converted to dataclass
 class Permission:
     GENERAL = 0x01
     ADMINISTER = 0xff
+    HAS_ACCESS = True
 
 
 class Role(db.Model):
