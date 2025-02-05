@@ -22,7 +22,7 @@ $(document).ready(function () {
   $('select').dropdown();
   function icontains(elem, text) {
     return (elem.textContent || elem.innerText || $(elem).text() || "")
-      .toLowerCase().indexOf((text || "").toLowerCase()) > -1;
+      .toLowerCase().indexOf((text || "").toUpperCase()) > -1;
   }
 
   $.expr[':'].icontains = $.expr.createPseudo ?
