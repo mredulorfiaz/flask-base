@@ -1,0 +1,60 @@
+name: Runs CI for this application
+on:
+  push:
+    branches:
+      - master
+      - "features/**"
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      python-version:
+        type: string
+        description: "Defines python version for workflow"
+        default: "3.8"
+      
+
+jobs:
+  lint-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build test runner docker image
+        run: docker compose build test-runner
+      - name: Run lint checker
+        run: docker compose up --abort-on-container-exit test-runner
+  lint-check-native:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install python ${{ inputs.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ inputs.python-version }}
+      - name: Install flake8
+        run: pip install flake8==7.1.1
+      - name: Run flake8 on changed files
+        run: |
+          echo ${{ github.head_ref }}
+          exit 1
+          # git fetch origin ${{ github.head_ref }} --depth=1
+          # CHANGED_FILES=$(git diff --name-only origin/${{ github.head_ref }} -- config.py)
+          # flake8 $CHANGED_FILES
+
+          
+
+
+
+  # unit-test:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: Install python ${{ inputs.python-version }}
+  #       uses: actions/setup-python@v5
+  #       with:
+  #         python-version: ${{ inputs.python-version }}
+  #     - name: Install pytest package
+  #       run: |
+  #         pip install -r requirements.txt
+  #         pip install pytest
+  #     - name: Run unit tests
+  #       run: pytest tests/
