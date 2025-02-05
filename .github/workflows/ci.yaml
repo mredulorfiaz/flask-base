@@ -35,6 +35,7 @@ jobs:
       - name: Run flake8 on changed files
         run: |
           echo ${{ github.head_ref }}
+          exit 1
           # git fetch origin ${{ github.head_ref }} --depth=1
           # CHANGED_FILES=$(git diff --name-only origin/${{ github.head_ref }} -- config.py)
           # flake8 $CHANGED_FILES
